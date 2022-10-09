@@ -6,7 +6,13 @@ package intrepion.greeting.json.rpc.server.kotlin.javalin
 import io.javalin.Javalin
 
 fun main() {
-    val app = Javalin.create(/*config*/)
-        .get("/") { ctx -> ctx.result("Hello World") }
-        .start(7070)
+    val app = Javalin.create {
+        it.plugins.enableCors {cors ->
+            cors.add {
+                it.allowHost("http://localhost:3000/")
+            }
+        }
+    }
+    .post("/api") { ctx -> ctx.result("Hello World") }
+    .start(7070)
 }
